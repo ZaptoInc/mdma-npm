@@ -1,0 +1,25 @@
+{
+  "name": "mdma",
+  "version": "0.0.1",
+  "description": "Markdown Meta Annotations is a markdown envelope to include metadata in annotations",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaptoInc/mdma-npm.git"
+  },
+  "keywords": [
+    "mdma",
+    "markdown",
+    "metadata",
+    "headers"
+  ],
+  "author": "ZaptoInc",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/ZaptoInc/mdma-npm/issues"
+  },
+  "homepage": "https://github.com/ZaptoInc/mdma-npm#readme"
+}
