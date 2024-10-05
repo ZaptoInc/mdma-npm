@@ -48,12 +48,7 @@ try {
   console.log("test1", "fail");
 }
 
-let test3 = testObj.version;
-if (test3 === expectedData.version) {
-  console.log("test3", "pass");
-} else {
-  console.log("test3", "fail");
-}
+BooleanTest("test3", testObj.version === expectedData.version);
 
 HeaderTest("test4_1", "title");
 HeaderTest("test4_2", "author");
@@ -66,40 +61,17 @@ HeaderTest("test4_8", "colon");
 HeaderTest("test4_9", "multi-header-support");
 HeaderTest("test4_10", "header-with-quotes");
 
-let test5 = testObj.GetTitle();
-if (test5 === expectedData.headers["title"][0]) {
-  console.log("test5", "pass");
-} else {
-  console.log("test5", "fail");
-}
-
-let test6 = testObj.GetAuthor();
-if (test6 === expectedData.headers["author"][0]) {
-  console.log("test6", "pass");
-} else {
-  console.log("test6", "fail");
-}
-
-let test7 = testObj.GetCreated();
-if (test7 === expectedData.headers["created"][0]) {
-  console.log("test7", "pass");
-} else {
-  console.log("test7", "fail");
-}
-
-let test8 = testObj.GetModified();
-if (test8 === expectedData.headers["modified"][0]) {
-  console.log("test8", "pass");
-} else {
-  console.log("test8", "fail");
-}
-
-let test9 = testObj.GetContent();
-if (test9 === expectedData.content) {
-  console.log("test9", "pass");
-} else {
-  console.log("test9", "fail");
-}
+BooleanTest("test5", testObj.GetTitle() === expectedData.headers["title"][0]);
+BooleanTest("test6", testObj.GetAuthor() === expectedData.headers["author"][0]);
+BooleanTest(
+  "test7",
+  testObj.GetCreated() === expectedData.headers["created"][0]
+);
+BooleanTest(
+  "test8",
+  testObj.GetModified() === expectedData.headers["modified"][0]
+);
+BooleanTest("test9", testObj.GetContent() === expectedData.content);
 
 function HeaderTest(name, headerName) {
   const testValues = testObj.GetHeader(headerName);
@@ -119,4 +91,8 @@ function HeaderTest(name, headerName) {
     }
     console.log(name, fail ? "fail" : "pass");
   }
+}
+
+function BooleanTest(name, test) {
+  console.log(name, test ? "pass" : "fail");
 }
