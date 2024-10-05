@@ -90,8 +90,7 @@ function getMDMAVersion(data) {
 }
 
 function mdmaParse(mdma, content) {
-  console.log(content);
-  const lines = splitLinesPreserveQuotes(content);
+  const lines = splitLinesPreserveQuotes(content.replaceAll("\r\n", "\n"));
   let inHeaders = false;
   let firstHeader = true;
   let inContent = false;

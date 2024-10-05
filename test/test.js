@@ -1,26 +1,18 @@
 const mdma = require("../index");
 
-const testData = `
-<!--
-MDMA/1.0
+const testData = `<!--\r\nMDMA/1.0
 title: "Document Title"
 author: "Author Name"
 created: 2024-10-03T14:30:45
 modified: 2024-10-04T09:15:22
 version: 1
 custom-metadata: "Custom Value"
-multi-Line: "Multi
-Line
-Support"
+multi-Line: "Multi\r\nLine\r\nSupport"
 colon: "Colon Support: True"
-multi-header-support : True
-header-with-quotes : ""test""
-multi-header-support : false
--->
-# Content Title
-
-Your markdown content goes here.
-`;
+multi-header-support : True\r\nmulti-header-support : false
+header-with-quotes : ""test""\r\n-->
+# Content Title\r\n
+Your markdown content goes here.`;
 
 const expectedData = {
   version: "1.0",
@@ -47,6 +39,8 @@ try {
 } catch (error) {
   console.log("test1", "fail");
 }
+
+let failed = [];
 
 BooleanTest("test3", testObj.version === expectedData.version);
 
@@ -89,10 +83,17 @@ function HeaderTest(name, headerName) {
         fail = true;
       }
     }
-    console.log(name, fail ? "fail" : "pass");
+    BooleanTest(name, !fail);
   }
 }
 
 function BooleanTest(name, test) {
   console.log(name, test ? "pass" : "fail");
+  if (!test) failed.push(name);
+}
+
+if (failed.length > 0) {
+  console.log(`${failed.length} fails (${failed.join(", ")})`);
+} else {
+  console.log("No fails, everything pass");
 }
