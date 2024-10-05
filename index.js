@@ -96,10 +96,13 @@ function mdmaParse(mdma, content) {
   const lines = splitLinesPreserveQuotes(content.replaceAll("\r\n", "\n"));
   let inHeaders = false;
   let firstHeader = true;
-  let inContent = false;
+  let inContent = true;
+  let metadataRead = false;
   lines.forEach((line) => {
-    if (!inHeaders && line === "<!--") {
+    if (!inHeaders && line === "<!--" && !metadataRead) {
       inHeaders = true;
+      inContent = false;
+      metadataRead = true;
     } else if (inHeaders && line === "-->") {
       inHeaders = false;
       inContent = true;
