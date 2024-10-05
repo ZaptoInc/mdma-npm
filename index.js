@@ -51,6 +51,11 @@ function splitLineOnce(line) {
   return [line.trim()];
 }
 
+const isISOString = (val) => {
+  const d = new Date(val);
+  return !Number.isNaN(d.valueOf()) && d.toISOString() === val;
+};
+
 function detectHeaderDataType(data) {
   data = data.trim(); // Remove leading/trailing whitespace
 
@@ -70,9 +75,7 @@ function detectHeaderDataType(data) {
   }
 
   // Check if it's an ISO 8601 date
-  const iso8601Regex =
-    /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[\+-]\d{2}:\d{2})?)?$/;
-  if (iso8601Regex.test(data) && !isNaN(Date.parse(data))) {
+  if (isISOString(data)) {
     return "date";
   }
 
@@ -123,7 +126,7 @@ function mdmaParse(mdma, content) {
           parsedData = headerData.toLowerCase() === "true";
           break;
         case "date":
-          parsedData = Date.parse(headerData);
+          parsedData = new Date(headerData);
           break;
         default:
           break;
@@ -143,6 +146,7 @@ function mdmaToString(mdma) {
   Object.entries(mdma.headers).forEach((header) => {
     header[1].forEach((headerValue) => {
       if (typeof headerValue == "string") headerValue = `"${headerValue}"`;
+      if (headerValue instanceof Date) headerValue = headerValue.toISOString();
       string += `\n${header[0]}: ${headerValue}`;
     });
   });

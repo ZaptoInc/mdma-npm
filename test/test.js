@@ -3,14 +3,15 @@ const mdma = require("../index");
 const testData = `<!--\r\nMDMA/1.0
 title: "Document Title"
 author: "Author Name"
-created: 2024-10-03T14:30:45
-modified: 2024-10-04T09:15:22
+created: 2024-10-03T14:30:45.000Z
+modified: 2024-10-04T09:15:22.000Z
 version: 1
 custom-metadata: "Custom Value"
 multi-Line: "Multi\r\nLine\r\nSupport"
 colon: "Colon Support: True"
 multi-header-support : True\r\nmulti-header-support : false
-header-with-quotes : ""test""\r\n-->
+header-with-quotes : ""test""
+old-iso-date: 2024-10-03T14:30:45\r\n-->
 # Content Title\r\n
 Your markdown content goes here.`;
 
@@ -19,8 +20,8 @@ const expectedData = {
   headers: {
     title: ["Document Title"],
     author: ["Author Name"],
-    created: [Date.parse("2024-10-03T14:30:45")],
-    modified: [Date.parse("2024-10-04T09:15:22")],
+    created: [new Date("2024-10-03T14:30:45.000Z")],
+    modified: [new Date("2024-10-04T09:15:22.000Z")],
     version: [1],
     "custom-metadata": ["Custom Value"],
     "multi-line": ["Multi\nLine\nSupport"],
@@ -33,14 +34,15 @@ const expectedData = {
 
 const testObj = mdma.new();
 
+let failed = [];
+
 try {
   testObj.Parse(testData);
-  console.log("test1", "pass");
+  BooleanTest("test1", true);
 } catch (error) {
-  console.log("test1", "fail");
+  BooleanTest("test1", false);
+  console.log(error);
 }
-
-let failed = [];
 
 BooleanTest("test3", testObj.version === expectedData.version);
 
@@ -59,11 +61,13 @@ BooleanTest("test5", testObj.GetTitle() === expectedData.headers["title"][0]);
 BooleanTest("test6", testObj.GetAuthor() === expectedData.headers["author"][0]);
 BooleanTest(
   "test7",
-  testObj.GetCreated() === expectedData.headers["created"][0]
+  testObj.GetCreated().getTime() ===
+    expectedData.headers["created"][0].getTime()
 );
 BooleanTest(
   "test8",
-  testObj.GetModified() === expectedData.headers["modified"][0]
+  testObj.GetModified().getTime() ===
+    expectedData.headers["modified"][0].getTime()
 );
 BooleanTest("test9", testObj.GetContent() === expectedData.content);
 
@@ -78,7 +82,11 @@ function HeaderTest(name, headerName) {
     for (let i = 0; i < expectedValues.length; i++) {
       const expected = expectedValues[i];
       const testValue = testValues[i];
-      if (testValue === expected) {
+      if (
+        typeof testValue === typeof expected && testValue instanceof Date
+          ? testValue.getTime() === expected.getTime()
+          : testValue === expected
+      ) {
       } else {
         fail = true;
       }
@@ -91,6 +99,8 @@ function BooleanTest(name, test) {
   console.log(name, test ? "pass" : "fail");
   if (!test) failed.push(name);
 }
+
+console.log(testObj.ToString());
 
 if (failed.length > 0) {
   console.log(`${failed.length} fails (${failed.join(", ")})`);
