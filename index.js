@@ -178,7 +178,10 @@ function mdmaGetFirstHeader(mdma, headerName) {
 function mdmaSetHeaders(mdma, headerName, values) {
   if (Array.isArray(values)) {
     mdma.headers[headerName.toLowerCase()] = values;
+  } else {
+    mdma.headers[headerName.toLowerCase()] = [values];
   }
+  return mdma;
 }
 
 function mdmaAddHeader(mdma, headerName, value) {
@@ -187,6 +190,7 @@ function mdmaAddHeader(mdma, headerName, value) {
   } else {
     mdma.headers[headerName.toLowerCase()] = [value];
   }
+  return mdma;
 }
 
 module.exports = {
@@ -209,20 +213,56 @@ module.exports = {
       GetHeader: function (headerName) {
         return mdmaGetHeader(this, headerName);
       },
+      SetHeader: function (headerName, values) {
+        mdmaSetHeaders(this, headerName, values);
+        return this;
+      },
+      AddHeader: function (headerName, value) {
+        mdmaAddHeader(this, headerName, value);
+        return this;
+      },
       GetTitle: function () {
         return mdmaGetFirstHeader(this, "title");
+      },
+      SetTitle: function (value) {
+        mdmaSetHeaders(this, "title", value);
+        return this;
       },
       GetAuthor: function () {
         return mdmaGetFirstHeader(this, "author");
       },
+      SetAuthor: function (value) {
+        mdmaSetHeaders(this, "author", value);
+        return this;
+      },
       GetCreated: function () {
         return mdmaGetFirstHeader(this, "created");
+      },
+      SetCreated: function (value) {
+        if (value instanceof Date) {
+          mdmaSetHeaders(this, "created", value);
+        } else {
+          throw new TypeError("value is not a Date");
+        }
+        return this;
       },
       GetModified: function () {
         return mdmaGetFirstHeader(this, "modified");
       },
+      SetModified: function (value) {
+        if (value instanceof Date) {
+          mdmaSetHeaders(this, "modified", value);
+        } else {
+          throw new TypeError("value is not a Date");
+        }
+        return this;
+      },
       GetContent: function () {
         return this.content.join("\n");
+      },
+      SetContent: function (content) {
+        this.content = content.split("\r\n").join("\n").split("\n");
+        return this;
       },
     };
     return mdma;

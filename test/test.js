@@ -71,6 +71,38 @@ BooleanTest(
 );
 BooleanTest("test9", testObj.GetContent() === expectedData.content);
 
+const testObj2 = mdma.new();
+
+BooleanTest(
+  "test10",
+  testObj2.SetTitle(expectedData.headers.title[0]).GetTitle() ===
+    expectedData.headers.title[0]
+);
+
+BooleanTest(
+  "test11",
+  testObj2.SetAuthor(expectedData.headers.author[0]).GetAuthor() ===
+    expectedData.headers.author[0]
+);
+
+BooleanTest(
+  "test12",
+  testObj2.SetCreated(expectedData.headers.created[0]).GetCreated() ===
+    expectedData.headers.created[0]
+);
+
+BooleanTest(
+  "test13",
+  testObj2.SetModified(expectedData.headers.modified[0]).GetModified() ===
+    expectedData.headers.modified[0]
+);
+
+BooleanTest(
+  "test14",
+  testObj2.SetContent(expectedData.content).GetContent() ===
+    expectedData.content
+);
+
 function HeaderTest(name, headerName) {
   const testValues = testObj.GetHeader(headerName);
   const expectedValues = expectedData.headers[headerName.toLowerCase()];
