@@ -198,7 +198,7 @@ module.exports = {
     let mdma = {
       //  headers
       // for example : { title : "My first MDMA post"}
-      version: undefined,
+      version: "1.0",
       headers: {},
       content: [],
       Parse: function (content) {
