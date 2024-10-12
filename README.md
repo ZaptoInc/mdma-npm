@@ -3,11 +3,11 @@ MDMA/1.0
 title: "About MDMA"
 author: "Zapto"
 created: 2024-10-03T19:18:13.000Z
-modified: 2024-10-05T13:51:47.784Z
-version: "1.0.2"
+modified: 2024-10-12T18:14:33.282Z
+version: "1.0.3"
 -->
 
-# MDMA v1.0.2
+# MDMA v1.0.3
 
 Markdown Meta Annotations NPM package
 

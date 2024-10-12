@@ -1,6 +1,6 @@
 {
   "name": "mdma",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Markdown Meta Annotations is a markdown envelope to include metadata in annotations",
   "main": "index.js",
   "scripts": {
