@@ -175,6 +175,20 @@ function mdmaGetFirstHeader(mdma, headerName) {
   }
 }
 
+function mdmaSetHeaders(mdma, headerName, values) {
+  if (Array.isArray(values)) {
+    mdma.headers[headerName.toLowerCase()] = values;
+  }
+}
+
+function mdmaAddHeader(mdma, headerName, value) {
+  if (mdma.headers[headerName.toLowerCase()]) {
+    mdma.headers[headerName.toLowerCase()].push(value);
+  } else {
+    mdma.headers[headerName.toLowerCase()] = [value];
+  }
+}
+
 module.exports = {
   new: function () {
     let mdma = {
